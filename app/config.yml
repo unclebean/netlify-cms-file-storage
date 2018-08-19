@@ -1,0 +1,19 @@
+backend:
+  name: file-storage
+
+display_url: https://example.com
+media_folder: "assets/uploads"
+
+# publish_mode: editorial_workflow
+
+collections: # A list of collections the CMS should be able to edit
+  - name: "faq" # Used in routes, ie.: /admin/collections/:slug/edit
+    label: "FAQ" # Used in the UI
+    folder: "faq"
+    create: true # Allow users to create new documents in this collection
+    slug: "{{year}}-{{month}}-{{day}}_{{slug}}"
+    fields: # The fields each document in this collection have
+      - {label: "Question", name: "title", widget: "string", tagname: "h1"}
+      - {label: "Answer", name: "body", widget: "markdown"}
+
+  
