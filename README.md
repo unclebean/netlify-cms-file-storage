@@ -13,3 +13,5 @@
 (3) supporting [minio](https://www.minio.io)
 
 (4) integrating [gatsby](https://www.gatsbyjs.org)
+
+(5) fix the directory is not existing then the service thrown error issue.

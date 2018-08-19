@@ -26,7 +26,7 @@ export default class fs {
   constructor(config) {
     this.config = config;
 
-    this.api_root = config.getIn(["backend", "api_root"], "http://localhost:3000/api");
+    this.api_root = config.getIn(["backend", "api_root"], "/api");
   }
 
   authComponent() {

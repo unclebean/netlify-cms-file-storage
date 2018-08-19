@@ -15,6 +15,6 @@ app.use(express.static('./server/contents'));
 
 FsServer(app);
 
-app.listen(3000, function(){
+app.listen(8080, function(){
     console.log('netlify cms is running on port 3000');
-});
+}, '127.0.0.1');
