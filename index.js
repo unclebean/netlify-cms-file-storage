@@ -1,10 +1,10 @@
-import FileStorageBackend from './src/implementation';
+import Implementation from './src/implementation';
 
 /**
  * Add extension hooks to global scope.
  */
 if (typeof window !== 'undefined') {
-  window.FileStorageBackend = FileStorageBackend;
+  window.FileStorageBackend = Implementation;
 }
 
 export default FileStorageBackend;

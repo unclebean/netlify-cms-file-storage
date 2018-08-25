@@ -1,7 +1,7 @@
 import {Base64} from "js-base64";
 const SIMPLE = 'simple';
 
-export default class API {
+export default class Service {
     constructor(config) {
         this.api_root = config.api_root || "/api";
     }

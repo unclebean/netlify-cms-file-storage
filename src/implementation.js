@@ -1,6 +1,6 @@
 import trimStart from 'lodash/trimStart';
 import AuthenticationUI from './AuthenticationUI';
-import API from "./service";
+import Service from "./service";
 
 window.repoFiles = window.repoFiles || {};
 
@@ -20,9 +20,9 @@ const nameFromEmail = email => {
     .filter(f => f)
     .map(s => s.substr(0, 1).toUpperCase() + (s.substr(1) || ''))
     .join(' ');
-}
+};
 
-export default class fs {
+export default class Implementation {
   constructor(config) {
     this.config = config;
 
@@ -38,7 +38,7 @@ export default class fs {
   }
 
   authenticate(state) {
-    this.api = new API({ api_root: this.api_root });
+    this.api = new Service({ api_root: this.api_root });
     return Promise.resolve({ email: state.email, name: nameFromEmail(state.email) });
   }
 

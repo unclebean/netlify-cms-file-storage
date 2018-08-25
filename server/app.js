@@ -1,5 +1,5 @@
 const express = require('express');
-const FsServer = require('./fs-express-api');
+const FsServer = require('./fs/fs-express-api');
 
 var app = express();
 
