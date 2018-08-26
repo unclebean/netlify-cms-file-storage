@@ -53,12 +53,8 @@ describe("file", () => {
         const fileHandler = fsAPI.file('new_folder', 'zero_content.md');
         fileHandler.create({content: 'test', encoding: 'utf-8'}).then((content) => {
             expect(content).to.equal('test');
-            fileHandler.del().then(() => {
-            }, () => {
-            });
-            fileHandler.rmDir().then(() => {
-            }, () => {
-            });
+            fileHandler.del();
+            fileHandler.rmDir();
             done();
         });
     });
@@ -69,9 +65,7 @@ describe("file", () => {
         });
         fileHandler.update({content: 'updated content', encoding: 'utf-8'}).then((content) => {
             expect(content).to.equal('updated content');
-            fileHandler.del().then(() => {
-            }, () => {
-            });
+            fileHandler.del();
             done();
         }, () => {
         });
@@ -82,10 +76,7 @@ describe("file", () => {
             fileHandler.del().then((status) => {
                 expect(status).to.equal('successful');
                 done();
-            }, () => {
-                done();
-            });
-        }, () => {
-        });
+            }, () => {});
+        }, () => {});
     });
 });

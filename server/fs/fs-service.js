@@ -1,4 +1,5 @@
 const fs = require('fs');
+const fse = require('fs-extra');
 const path = require('path');
 
 const projectRoot = path.join(__dirname, '../');
@@ -34,7 +35,7 @@ const createFilePromise = (filePath, body, flag = 'wx') => {
 
 const createFolderPromise = (folderPath) => {
     return new Promise((resolve, reject) => {
-        fs.mkdir(folderPath, (err) => {
+        fse.ensureDir(folderPath, (err) => {
             err ? reject(err) : resolve('successful');
         });
     });
@@ -77,45 +78,22 @@ module.exports = {
         /* GET-Read an existing file */
         const read = () => {
             return readFilePromise(filePath);
-            /*return new Promise((resolve, reject) => {
-                getFileInfoPromise(filePath).then(() => {
-                    readFilePromise(filePath);
-                }, (err) => {
-                    reject(new Error("Invalid call to file.read - object path is not a file!"));
-                });
-            });*/
         };
         /* POST-Create a NEW file, ERROR if exists */
         const create = (body) => {
-            return getFileInfoPromise(folderPath).then(() => {
+            return createFolderPromise(folderPath).then(() => {
                 return createFilePromise(filePath, body);
-            }, () => {
-                return createFolderPromise(folderPath).then(
-                    () => {
-                        return createFilePromise(filePath, body);
-                    }, (err) => Promise.reject(err)
-                );
+            }, (err) => {
+                Promise.reject(err);
             });
-            /*return new Promise((resolve, reject) => {
-                getFileInfoPromise(folderPath).then(() => {
-                    createFilePromise(filePath, body).then(
-                        (content) => resolve(content),
-                        (err) => reject(err));
-                }, () => {
-                    createFolderPromise(folderPath).then(
-                        () => {
-                            createFilePromise(filePath, body).then(
-                                (content) => resolve(content),
-                                (err) => reject(err));
-
-                        }, (err) => reject(err)
-                    );
-                });
-            });*/
         };
         /* PUT-Update an existing file */
         const update = (body) => {
-            return createFilePromise(filePath, body, 'w');
+            return createFolderPromise(folderPath).then(() => {
+                return createFilePromise(filePath, body, 'w');
+            }, (err) => {
+                Promise.reject(err);
+            });
         };
         /* DELETE an existing file */
         const del = () => {
