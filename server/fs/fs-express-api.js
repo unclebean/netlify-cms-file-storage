@@ -118,6 +118,7 @@ module.exports = (app) => {
         const {category} = req.params;
         updateContent(req, res, category);
     });
+
     app.put('/api/file/:assets/:category/:fileName', upload.array(), (req, res, next) => {
         const {assets, category} = req.params;
         updateContent(req, res, `${assets}/${category}`);
@@ -125,5 +126,10 @@ module.exports = (app) => {
 
     app.delete('/api/file/:category/:fileName', (req, res, next) => {
         deleteContent(req, res, req.params.category);
+    });
+
+    app.delete('/api/file/:assets/:category/:fileName', upload.array(), (req, res, next) => {
+        const {assets, category} = req.params;
+        deleteContent(req, res, `${assets}/${category}`);
     });
 };
