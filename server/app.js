@@ -1,5 +1,6 @@
 const express = require('express');
 const FsServer = require('./fs/fs-express-api');
+const WorkflowServer = require('./workflow/workflow-express-api');
 
 var app = express();
 
@@ -14,6 +15,7 @@ app.use(express.static('app'));
 app.use(express.static('./server/contents'));
 
 FsServer(app);
+WorkflowServer(app);
 
 app.listen(8080, function(){
     console.log('netlify cms is running on port 8080');

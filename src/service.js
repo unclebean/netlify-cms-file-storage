@@ -168,8 +168,72 @@ export default class Service {
         const fileURL = `/file/${ path }`;
         return this.request(fileURL, {
             method: "DELETE",
-            params: {},
+            params: {}
         });
+    }
+
+    unpublishedEntries() {
+        return this.request('/workflow/unpublishedEntries', {method: "GET", params: {}}).then((response) => {
+            return response.map((entry => {
+                entry.data = Base64.decode(entry.data.content);
+                return entry;
+            }));
+        });
+    }
+
+    unpublishedEntry(category, slug) {
+        return this.request(`/workflow/unpublishedEntry/${category}/${slug}`, {method: "GET", params: {}}).then((response) => {
+            try{
+                response.data = Base64.decode(response.data.content);
+                return response;
+            } catch(e) {
+                return null;
+            }
+        });
+    }
+
+    createDraftEntry(category, contentName, content) {
+        const url = `/workflow/save/${category}/${contentName}`;
+        const base64Body = content.raw ? this.toBase64(content.raw) : content.toBase64();
+        return base64Body.then(encodeContent => this.request(url, {
+            method: 'POST',
+            body: JSON.stringify({
+                content: encodeContent,
+                encoding: "base64",
+            }),
+        }).then((response) => {
+            console.log(response);
+            content.uploaded = true;
+            console.log(content);
+            return content;
+        }));
+    }
+
+    updateUnpublishedEntryStatus(category, slug, newStatus) {
+        const url = `/workflow/updateUnpublishedEntryStatus/${category}/${slug}/${newStatus}`;
+        return this.request(url, {method: 'PUT'});
+    }
+
+    publishedEntries(category, extension) {
+        const url = `/workflow/publishedEntries/${category}`;
+        return this.request(url, {method: 'GET'}).then(response => {
+            return response.map((entry => {
+                entry.name = `${entry.slug}.${extension}`;
+                entry.data = Base64.decode(entry.data.content);
+                entry.file = {path: `${entry.collection}/${entry.slug}.${extension}`};
+                return entry;
+            }));
+        });
+    }
+
+    publishEntry(category, slug) {
+        const url = `/workflow/publishEntry/${category}/${slug}`;
+        return this.request(url, {method: 'PUT'});
+    }
+
+    deleteEntry(category, slug) {
+        const url = `/workflow/delete/${category}/${slug}`;
+        return this.request(url, {method: 'DELETE'});
     }
 
 }
